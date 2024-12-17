@@ -6,17 +6,15 @@
 #    By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 15:28:49 by juhtoo-h          #+#    #+#              #
-#    Updated: 2024/10/23 14:42:35 by juhtoo-h         ###   ########.fr        #
+#    Updated: 2024/12/17 14:09:30 by juhtoo-h         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_PATH = src/
-
-# SRCS = check_map.c main.c error_utils.c file_to_img.c so_long_utils.c put_pic.c \
-# 		events.c animation.c
 		
- SRCS = check_map.c so_long.c error_utils.c file_to_img.c so_long_utils.c put_pic.c \
- 		events.c animation.c
+SRCS = check_map.c so_long.c error_utils.c file_to_img.c so_long_utils.c put_pic.c \
+ 		events.c animation.c animation_walking.c animation_utils.c collection.c \
+		exit.c
 
 SRCS_PREFIXED = $(addprefix $(SRC_PATH), $(SRCS))
 
@@ -27,7 +25,6 @@ NAME = so_long
 CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
-# CFLAGS = -g3 -fsanitize=address
 
 MLX42_PATH = lib/MLX42/
 
@@ -60,8 +57,6 @@ SUBSYSTEMS:
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJECTS) Makefile $(INCLUDE)
-	@echo "Compling $(SRCS)..."
-	@echo "Finished $(SRCS)"
 	@echo
 	@echo "Compling $(NAME)..."
 	$(CC) $(CFLAGS) $(OBJECTS) $(MLX42_LIB) $(LIBFT_LIB) $(PRINTF_LIB) -o $(NAME)

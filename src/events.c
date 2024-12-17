@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 15:57:48 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/10/23 11:09:07 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/09 13:50:13 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,25 +66,13 @@ static void	get_face_toward(t_data *data, t_move dir)
 static void	get_new_position(t_data *data, t_move dir)
 {
 	if (dir == UP)
-	{
-		// data->player.idle[0]->instances->y -= PIXEL;
 		data->player.position.y -= 1;
-	}
 	else if (dir == DOWN)
-	{
-		// data->player.idle[0]->instances->y += PIXEL;
 		data->player.position.y += 1;
-	}
 	else if (dir == RIGHT)
-	{
-		// data->player.idle[0]->instances->x += PIXEL;
 		data->player.position.x += 1;
-	}
 	else if (dir == LEFT)
-	{
-		// data->player.idle[0]->instances->x -= PIXEL;
 		data->player.position.x -= 1;
-	}
 	get_face_toward(data, dir);
 	data->moves += 1;
 	data->player.status = MOVING;

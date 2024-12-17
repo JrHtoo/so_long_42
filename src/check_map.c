@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 09:01:16 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/10/18 09:09:47 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:13:23 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	check_borders(t_data data)
 	}
 }
 
-static void	check_contents(t_data data)
+static void	check_contents(t_data *data)
 {
 	int	i;
 	int	player;
@@ -49,21 +49,21 @@ static void	check_contents(t_data data)
 	i = 0;
 	player = 0;
 	exit = 0;
-	data.map.to_collect = 0;
-	while (i < data.map.size.y)
+	data->map.to_collect = 0;
+	while (i < data->map.size.y)
 	{
-		player += ft_count_char(data.map.map[i], 'P');
-		exit += ft_count_char(data.map.map[i], 'E');
-		data.map.to_collect += ft_count_char(data.map.map[i], 'C');
+		player += ft_count_char(data->map.map[i], 'P');
+		exit += ft_count_char(data->map.map[i], 'E');
+		data->map.to_collect += ft_count_char(data->map.map[i], 'C');
 		i++;
 	}
 	if (player != 1)
-		ft_print_error(&data, "Error! There should be only one player\n");
+		ft_print_error(data, "Error! There should be only one player\n");
 	if (exit < 1)
-		ft_print_error(&data,
+		ft_print_error(data,
 			"Error! A proper map should contain at least one exit");
-	if (data.map.to_collect < 1)
-		ft_print_error(&data,
+	if (data->map.to_collect < 1)
+		ft_print_error(data,
 			"Error! There should be at least a thing to collect!\n");
 }
 
@@ -109,7 +109,6 @@ void	read_map(t_data *data, char *map_path)
 		i++;
 	}
 	check_borders(*data);
-	check_contents(*data);
+	check_contents(data);
 	check_route(data);
-	printf("%d %d\n", data->player.position.x, data->player.position.y);
 }

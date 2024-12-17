@@ -6,28 +6,11 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:21:49 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/10/23 15:21:21 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:47:32 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
-
-mlx_image_t	*ft_texture_to_image(t_data *data, char *path,
-	int width, int height)
-{
-	mlx_image_t		*img;
-	mlx_texture_t	*texture;
-
-	texture = mlx_load_png(path);
-	if (!texture)
-		ft_print_error(data, "Texture is not texturing\n");
-	img = mlx_texture_to_image(data->mlx, texture);
-	if (!img)
-		ft_print_error(data, "Image is not imaging\n");
-	mlx_resize_image(img, width, height);
-	mlx_delete_texture(texture);
-	return (img);
-}
 
 static void	fill_background(t_data *data)
 {
@@ -51,60 +34,45 @@ static void	fill_background(t_data *data)
 
 static void	fill_wall(t_data *data)
 {
-	mlx_image_t	*i[4];
+	mlx_image_t	*i;
 	t_pos		p;
 
-	i[0] = ft_texture_to_image(data, "textures/wall.png", PIXEL, PIXEL);
-	i[1] = ft_texture_to_image(data, "textures/wall.png", PIXEL, PIXEL);
-	i[2] = ft_texture_to_image(data, "textures/wall_side.png", PIXEL, PIXEL);
-	i[3] = ft_texture_to_image(data, "textures/wall_side.png", PIXEL, PIXEL);
-	p.y = 1;
-	while (p.y <= data->map.size.y)
+	i = ft_texture_to_image(data, "textures/wall.png", PIXEL, PIXEL);
+	p.y = 0;
+	while (p.y < data->map.size.y)
 	{
-		p.x = 1;
+		p.x = 0;
 		while (p.x < data->map.size.x)
 		{
-			if (p.y == 1)
-				mlx_image_to_window(data->mlx, i[0], PIXEL * p.x, PIXEL * p.y);
-			else if (p.y == data->map.size.y)
-				mlx_image_to_window(data->mlx, i[1], PIXEL * p.x, PIXEL * p.y);
-			else if (p.x == 1)
-				mlx_image_to_window(data->mlx, i[2], PIXEL * p.x, PIXEL * p.y);
-			else if (p.x == data->map.size.x - 1)
-				mlx_image_to_window(data->mlx, i[3], PIXEL * p.x, PIXEL * p.y);
+			if (data->map.map[p.y][p.x] == WALL)
+				mlx_image_to_window(data->mlx, i,
+					PIXEL * (p.x + 1), (PIXEL * (p.y + 1)) - 5);
 			p.x++;
 		}
 		p.y++;
 	}
 }
 
-static void	fill_everything(t_data data)
+static void	fill_everything(t_data *data)
 {
-	int			x;
-	int			y;
-	mlx_image_t	*coin;
-	mlx_image_t	*wall;
+	t_pos		pos;
 
-	coin = ft_texture_to_image(&data, "textures/Icon20.png", PIXEL, PIXEL);
-	wall = ft_texture_to_image(&data, "textures/wall1.png", PIXEL, PIXEL);
-	y = 1;
-	while (y < data.map.size.y)
+	pos.y = 1;
+	while (pos.y < data->map.size.y)
 	{
-		x = 1;
-		while (x < data.map.size.x - 2)
+		pos.x = 1;
+		while (pos.x < data->map.size.x - 2)
 		{
-			if (data.map.map[y][x] == PLAYER)
-				mlx_image_to_window(data.mlx,
-					data.player.idle[0], PIXEL * (x + 1), PIXEL * (y + 1));
-			else if (data.map.map[y][x] == COIN)
-				mlx_image_to_window(data.mlx,
-					coin, PIXEL * (x + 1), PIXEL * (y + 1));
-			else if (data.map.map[y][x] == WALL)
-				mlx_image_to_window(data.mlx,
-					wall, PIXEL * (x + 1), PIXEL * (y + 1));
-			x++;
+			if (data->map.map[pos.y][pos.x] == PLAYER)
+				mlx_image_to_window(data->mlx, data->player.idle[0],
+					PIXEL * (pos.x + 1), PIXEL * (pos.y + 1));
+			else if (data->map.map[pos.y][pos.x] == COIN)
+				fill_coin(data, pos);
+			else if (data->map.map[pos.y][pos.x] == EXIT)
+				fill_exit(data, pos);
+			pos.x++;
 		}
-		y++;
+		pos.y++;
 	}
 }
 
@@ -113,7 +81,7 @@ static void	render_sprite(t_data data)
 	int	i;
 
 	i = 0;
-	while (i < 8)
+	while (i < 28)
 	{
 		mlx_image_to_window(data.mlx, data.player.walking[i],
 			PIXEL * (data.player.position.x + 1),
@@ -132,6 +100,6 @@ void	rendering(t_data *data)
 	fill_background(data);
 	fill_wall(data);
 	put_pic(data);
-	fill_everything(*data);
+	fill_everything(data);
 	render_sprite(*data);
 }

@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 09:07:09 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/10/23 15:29:37 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/17 17:47:32 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,14 @@
 # define IMG_H 32
 
 # define PIXEL 80
+# define COL_SIZE 50
 # define STEP_SIZE 10
 # define SPACE 160
-# define SPEED 6
+# define SPEED_W 5
+# define SPEED_C 10
+# define SPEED_E 20
 # define FPS 24
+# define MAX_COL 50
 
 # define PLAYER	'P'
 # define COIN 'C'
@@ -41,15 +45,6 @@
 # define GAME_TITLE "SO LONG"
 
 # define IMG_BACKGROUND "./textures/texture.png"
-
-# define S_IMG_IDILE01 "./textures/character/s_idile1.png"
-# define S_IMG_IDILE02 "./textures/character/s_idile2.png"
-# define S_IMG_IDILE03 "./textures/character/s_idile3.png"
-# define S_IMG_IDILE04 "./textures/character/s_idile4.png"
-# define S_IMG_IDILE05 "./textures/character/s_idile5.png"
-# define S_IMG_IDILE06 "./textures/character/s_idile6.png"
-# define S_IMG_IDILE07 "./textures/character/s_idile7.png"
-# define S_IMG_IDILE08 "./textures/character/s_idile8.png"
 
 typedef enum status
 {
@@ -67,6 +62,18 @@ typedef enum move
 	LEFT,
 	RIGHT,
 }					t_move;
+
+typedef enum colstatus
+{
+	COLLECTED,
+	TOCOLLECT,
+}					t_colstatus;
+
+typedef enum exitstatus
+{
+	CAN,
+	CANNOT,
+}					t_exitstatus;
 
 typedef struct s_pos
 {
@@ -86,20 +93,38 @@ typedef struct s_anime
 	t_status	status;
 	t_move		face_toward;
 	t_pos		position;
-	mlx_image_t	*walking[8];
-	mlx_image_t	*idle[6];
-	mlx_image_t	*spin[12];
+	mlx_image_t	*walking[29];
+	mlx_image_t	*idle[2];
+	mlx_image_t	*death[12];
 }					t_anime;
+
+typedef struct s_collect
+{
+	t_pos		pos;
+	t_colstatus	status;
+	mlx_image_t	*img[5];
+}					t_collect;
+
+typedef struct s_exit
+{
+	t_pos			pos;
+	t_exitstatus	status;
+	mlx_image_t		*img[5];
+}					t_exit;
 
 typedef struct s_data
 {
-	mlx_t	*mlx;
-	t_map	map;
-	t_anime	player;
-	int		collected;
-	int		moves;
+	mlx_t		*mlx;
+	t_map		map;
+	t_anime		player;
+	t_collect	collect[MAX_COL];
+	t_exit		exit;	
+	int			collected;
+	int			moves;
+	mlx_image_t	*digit[10];
 }					t_data;
 
+void		fill_coin(t_data *data, t_pos pos);
 void		ft_print_error(t_data *data, char *error_msg);
 void		read_map(t_data *data, char *map_path);
 void		rendering(t_data *data);
@@ -114,5 +139,14 @@ void		put_pic(t_data *data);
 void		detect_keys(mlx_key_data_t keydata, void *param);
 void		ft_exit(t_data *data, char *error_msg);
 void		animate(void *param);
+void		player_walking(t_data *data, int x, int y);
+t_pos		get_distance(t_data data);
+void		animate_collection(t_data *data);
+void		collected_function(t_data *data);
+void		fill_exit(t_data *data, t_pos pos);
+void		open_exit(t_data *data);
+void		can_exit(t_data *data);
+int32_t		i2win(mlx_t *mlx, mlx_image_t *img, int32_t x, int32_t y);
+mlx_image_t	*ft_texture_to_image(t_data *data, char *path, int width, int height);
 
 #endif
