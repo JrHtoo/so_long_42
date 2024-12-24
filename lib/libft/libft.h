@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 08:41:30 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/10/14 12:48:52 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/19 09:15:33 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ int		ft_line_length(int fd);
 int		ft_count_line(int fd);
 int		ft_count_char(char *str, char c);
 void	ft_printmap(char **map);
+char	*ft_itoa(int n);
 
 #endif

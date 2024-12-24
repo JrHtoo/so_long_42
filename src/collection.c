@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 16:16:10 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/16 17:40:11 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:17:22 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	collected_function(t_data *data)
 	pos.y = data->player.position.y;
 	if (data->map.map[pos.y][pos.x] == COIN)
 	{
-		data->collected++;
 		index = find_collection(data, pos);
 		if (data->collect[index].status == TOCOLLECT)
 		{
@@ -49,6 +48,7 @@ void	collected_function(t_data *data)
 				data->collect[index].status = COLLECTED;
 				i++;
 			}
+			data->collected++;
 		}
 	}
 }

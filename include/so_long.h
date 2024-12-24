@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 09:07:09 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/17 17:47:32 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/24 12:51:49 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,17 @@
 # define IMG_H 32
 
 # define PIXEL 80
+# define PIX_D 40
 # define COL_SIZE 50
 # define STEP_SIZE 10
 # define SPACE 160
 # define SPEED_W 5
 # define SPEED_C 10
 # define SPEED_E 20
+# define SPEED_M 5
+# define SPEED_D 30
 # define FPS 24
-# define MAX_COL 50
+# define MAX_COL 30
 
 # define PLAYER	'P'
 # define COIN 'C'
@@ -50,7 +53,6 @@ typedef enum status
 {
 	IDILE,
 	MOVING,
-	WIN,
 	DIE,
 }					t_status;
 
@@ -62,6 +64,13 @@ typedef enum move
 	LEFT,
 	RIGHT,
 }					t_move;
+
+typedef enum game
+{
+	WIN,
+	LOSS,
+	YET,
+}				t_game;
 
 typedef enum colstatus
 {
@@ -86,6 +95,7 @@ typedef struct s_map
 	char	**map;
 	int		to_collect;
 	t_pos	size;
+	int		mon_num;
 }					t_map;
 
 typedef struct s_anime
@@ -95,7 +105,7 @@ typedef struct s_anime
 	t_pos		position;
 	mlx_image_t	*walking[29];
 	mlx_image_t	*idle[2];
-	mlx_image_t	*death[12];
+	mlx_image_t	*death[4];
 }					t_anime;
 
 typedef struct s_collect
@@ -115,6 +125,7 @@ typedef struct s_exit
 typedef struct s_data
 {
 	mlx_t		*mlx;
+	t_game		status;
 	t_map		map;
 	t_anime		player;
 	t_collect	collect[MAX_COL];
@@ -122,6 +133,7 @@ typedef struct s_data
 	int			collected;
 	int			moves;
 	mlx_image_t	*digit[10];
+	mlx_image_t	*mon[5];
 }					t_data;
 
 void		fill_coin(t_data *data, t_pos pos);
@@ -140,13 +152,15 @@ void		detect_keys(mlx_key_data_t keydata, void *param);
 void		ft_exit(t_data *data, char *error_msg);
 void		animate(void *param);
 void		player_walking(t_data *data, int x, int y);
-t_pos		get_distance(t_data data);
 void		animate_collection(t_data *data);
 void		collected_function(t_data *data);
 void		fill_exit(t_data *data, t_pos pos);
 void		open_exit(t_data *data);
 void		can_exit(t_data *data);
-int32_t		i2win(mlx_t *mlx, mlx_image_t *img, int32_t x, int32_t y);
-mlx_image_t	*ft_texture_to_image(t_data *data, char *path, int width, int height);
+void		display_moves(t_data *data);
+void		moves_moves(t_data *data);
+void		fill_monster(t_data *data, t_pos pos);
+void		monster_animation(t_data *data);
+void		is_death(t_data *data);
 
 #endif

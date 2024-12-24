@@ -9,7 +9,8 @@ SRCS =	ft_bzero.c		\
 		ft_line_length.c \
 		ft_count_line.c  \
 		ft_count_char.c \
-		ft_printmap.c
+		ft_printmap.c \
+		ft_itoa.c
 		
 NAME = libft.a
 

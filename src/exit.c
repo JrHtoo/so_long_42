@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 17:38:12 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/17 15:24:18 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:04:58 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void	can_exit(t_data *data)
 	if ((data->player.position.x == data->exit.pos.x
 			&& data->player.position.y == data->exit.pos.y)
 		&& data->exit.status == CAN)
-		ft_exit(data, "Well Done! Game Finished\n");
+	{
+		data->status = WIN;
+		ft_printf("Well Done! Game Finished\n");
+	}
 }
 
 void	open_exit(t_data *data)
@@ -54,7 +57,6 @@ void	open_exit(t_data *data)
 					data->exit.img[4]->instances->enabled = false;
 				data->exit.img[(i / SPEED_E)]->instances->enabled = true;
 				data->exit.img[(i / SPEED_E) - 1]->instances->enabled = false;
-				printf("exit %d %d\n", i / SPEED_E, (i / SPEED_E) - 1);
 			}
 			i++;
 		}

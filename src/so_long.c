@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:05:10 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/10/23 10:13:44 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/24 12:47:51 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 static void	ft_window_size(t_data *data, char *map_path)
 {
 	int	fd;
+	int	n;
 
+	n = ft_strlen(map_path) - 1;
 	fd = open(map_path, O_RDONLY);
-	if (fd < 0)
+	if (fd < 0 || (map_path[n] != 'r' && map_path[n - 1] != 'e'
+			&& map_path[n - 2] != 'b' && map_path[n - 3] != '.'))
 	{
-		perror("Error\nInvalid map_path/map\n");
+		perror("Error\n Invalid map_path/map\n");
 		exit(EXIT_FAILURE);
 	}
 	data->map.size.x = ft_line_length(fd);
@@ -33,6 +36,9 @@ static void	ft_init(t_data *data)
 	data->player.status = IDILE;
 	data->player.face_toward = DOWN;
 	data->moves = 0;
+	data->status = YET;
+	data->map.mon_num = 0;
+	data->map.to_collect = 0;
 }
 
 int32_t	main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:21:49 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/17 17:47:32 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/19 16:08:31 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ static void	fill_everything(t_data *data)
 				fill_coin(data, pos);
 			else if (data->map.map[pos.y][pos.x] == EXIT)
 				fill_exit(data, pos);
+			else if (data->map.map[pos.y][pos.x] == MONSTER)
+				fill_monster(data, pos);
 			pos.x++;
 		}
 		pos.y++;
@@ -102,4 +104,5 @@ void	rendering(t_data *data)
 	put_pic(data);
 	fill_everything(data);
 	render_sprite(*data);
+	display_moves(data);
 }

@@ -6,13 +6,13 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:08:18 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/17 15:06:39 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/20 13:01:00 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-t_pos	get_distance(t_data data)
+static t_pos	get_distance(t_data data)
 {
 	t_pos	distance;
 
@@ -46,7 +46,7 @@ static int	facing_value(t_data *data)
 	if (data->player.face_toward == UP)
 		return (20);
 	else if (data->player.face_toward == DOWN)
-		return (1);
+		return (0);
 	else if (data->player.face_toward == RIGHT)
 		return (7);
 	else if (data->player.face_toward == LEFT)
@@ -98,5 +98,6 @@ void	player_walking(t_data *data, int x, int y)
 			data->player.walking[index]);
 		frame = 1;
 		collected_function(data);
+		can_exit(data);
 	}
 }

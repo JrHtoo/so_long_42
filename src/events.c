@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 15:57:48 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/09 13:50:13 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:16:34 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,18 @@ void	detect_keys(mlx_key_data_t keydata, void *param)
 	t_move	dir;
 
 	data = (t_data *)param;
-	if (keydata.action == MLX_PRESS)
+	if (data->status == YET)
 	{
-		if (keydata.key == MLX_KEY_ESCAPE)
-			ft_exit(data, "Escape from the game!\n");
-		dir = direction(*data, keydata.key);
-		if (dir != INVALID && data->player.status == IDILE)
+		if (keydata.action == MLX_PRESS)
 		{
-			get_new_position(data, dir);
-			ft_printf("%d moves\n", data->moves);
+			if (keydata.key == MLX_KEY_ESCAPE)
+				ft_exit(data, "Escape from the game!\n");
+			dir = direction(*data, keydata.key);
+			if (dir != INVALID && data->player.status == IDILE)
+			{
+				get_new_position(data, dir);
+				ft_printf("%d moves\n", data->moves);
+			}
 		}
 	}
 }

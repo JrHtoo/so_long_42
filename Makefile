@@ -6,7 +6,7 @@
 #    By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 15:28:49 by juhtoo-h          #+#    #+#              #
-#    Updated: 2024/12/17 14:09:30 by juhtoo-h         ###   ########.fr        #
+#    Updated: 2024/12/23 16:22:36 by juhtoo-h         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SRC_PATH = src/
 		
 SRCS = check_map.c so_long.c error_utils.c file_to_img.c so_long_utils.c put_pic.c \
  		events.c animation.c animation_walking.c animation_utils.c collection.c \
-		exit.c
+		exit.c display.c monster.c death.c
 
 SRCS_PREFIXED = $(addprefix $(SRC_PATH), $(SRCS))
 

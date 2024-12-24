@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 09:01:16 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/16 16:13:23 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/24 12:48:04 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static void	check_borders(t_data data)
 		{
 			if (data.map.map[y][x] != '1' && data.map.map[y][x] != '0'
 			&& data.map.map[y][x] != 'C' && data.map.map[y][x] != 'P'
-			&& data.map.map[y][x] != 'E')
-				ft_print_error(&data, "Only 1,0,E,P,C are allowed!\n");
+			&& data.map.map[y][x] != 'E' && data.map.map[y][x] != 'M')
+				ft_print_error(&data, "Only 1,0,E,P,C,M are allowed!\n");
 			else if ((y == 0 || x == 0) && data.map.map[y][x] != '1')
 				ft_print_error(&data, "The borders are not bordering\n");
 			else if ((y == data.map.size.y - 1 || x == data.map.size.x - 2)
@@ -49,7 +49,6 @@ static void	check_contents(t_data *data)
 	i = 0;
 	player = 0;
 	exit = 0;
-	data->map.to_collect = 0;
 	while (i < data->map.size.y)
 	{
 		player += ft_count_char(data->map.map[i], 'P');
@@ -57,14 +56,14 @@ static void	check_contents(t_data *data)
 		data->map.to_collect += ft_count_char(data->map.map[i], 'C');
 		i++;
 	}
+	if (data->map.size.x <= 2 || data->map.size.y <= 2)
+		ft_print_error(data, "Error! MAP INPUT ERROR!\n");
 	if (player != 1)
-		ft_print_error(data, "Error! There should be only one player\n");
-	if (exit < 1)
-		ft_print_error(data,
-			"Error! A proper map should contain at least one exit");
-	if (data->map.to_collect < 1)
-		ft_print_error(data,
-			"Error! There should be at least a thing to collect!\n");
+		ft_print_error(data, "Error! PLAYER INPUT ERROR\n");
+	if (exit != 1)
+		ft_print_error(data, "Error! EXIT INPUT ERROR!\n");
+	if (data->map.to_collect < 1 || data->map.to_collect > MAX_COL)
+		ft_print_error(data, "Error! COLLECTION INPUT ERROR!\n");
 }
 
 static void	check_route(t_data *data)

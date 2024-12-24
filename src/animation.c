@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 09:55:11 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/17 15:27:32 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:22:17 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,10 @@ void	animate(void *param)
 	t_data		*data;
 
 	data = (t_data *)param;
+	is_death(data);
 	animate_collection(data);
 	animate_player(data);
+	monster_animation(data);
+	moves_moves(data);
 	open_exit(data);
-	can_exit(data);
 }
