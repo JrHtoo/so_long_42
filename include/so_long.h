@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 09:07:09 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/24 12:51:49 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/02/13 13:23:16 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@
 # define SPEED_C 10
 # define SPEED_E 20
 # define SPEED_M 5
-# define SPEED_D 30
+# define SPEED_D 100
 # define FPS 24
 # define MAX_COL 30
+# define MAX_MON 10
+# define DIE_R 40
 
 # define PLAYER	'P'
 # define COIN 'C'
@@ -132,35 +134,66 @@ typedef struct s_data
 	t_exit		exit;	
 	int			collected;
 	int			moves;
+	mlx_image_t	*asset[2];
 	mlx_image_t	*digit[10];
 	mlx_image_t	*mon[5];
+	t_move		mon_dir[MAX_MON];
 }					t_data;
 
+//animation_utils
 void		fill_coin(t_data *data, t_pos pos);
-void		ft_print_error(t_data *data, char *error_msg);
+void		animate_collection(t_data *data);
+
+//animation_wallking
+void		player_walking(t_data *data, int x, int y);
+
+//animation
+void		animate(void *param);
+
+//check_map
 void		read_map(t_data *data, char *map_path);
+
+//collection
+void		collected_function(t_data *data);
+
+//death
+void		is_death(t_data *data);
+
+//display
+void		display_moves(t_data *data);
+void		moves_moves(t_data *data);
+
+//error_utils
+void		ft_free_images(t_data *data);
+void		ft_print_error(t_data *data, char *error_msg);
+void		ft_exit(t_data *data, char *error_msg);
+void		ft_print_error_parameter(char *error_msg);
+mlx_image_t	*ft_texture_to_image(t_data *data, char *path,
+				int width, int height);
+
+//events
+void		detect_keys(mlx_key_data_t keydata, void *param);
+
+//exit
+void		fill_exit(t_data *data, t_pos pos);
+void		open_exit(t_data *data);
+void		can_exit(t_data *data);
+
+//file_to_img
 void		rendering(t_data *data);
+
+//monster
+void		fill_monster(t_data *data, t_pos pos);
+void		monster_animation(t_data *data);
+
+// put_pic
+void		put_pic(t_data *data);
+
+//so_long_utils
 void		ft_freemap(char **map, int size);
 char		**ft_copy_map(t_data data);
 void		flood_fill(char **map, t_pos size, int row, int col);
 int			ft_mapchr(char **map, t_pos size, char c);
 t_pos		ft_findpos(t_data *data, char c);
-mlx_image_t	*ft_texture_to_image(t_data *data, char *path,
-				int width, int height);
-void		put_pic(t_data *data);
-void		detect_keys(mlx_key_data_t keydata, void *param);
-void		ft_exit(t_data *data, char *error_msg);
-void		animate(void *param);
-void		player_walking(t_data *data, int x, int y);
-void		animate_collection(t_data *data);
-void		collected_function(t_data *data);
-void		fill_exit(t_data *data, t_pos pos);
-void		open_exit(t_data *data);
-void		can_exit(t_data *data);
-void		display_moves(t_data *data);
-void		moves_moves(t_data *data);
-void		fill_monster(t_data *data, t_pos pos);
-void		monster_animation(t_data *data);
-void		is_death(t_data *data);
 
 #endif

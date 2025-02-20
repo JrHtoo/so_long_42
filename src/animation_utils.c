@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 10:49:51 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/24 12:30:48 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:46:00 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	fill_coin(t_data *data, t_pos pos)
 	data->map.to_collect = index;
 }
 
-void	animate_collection_utils(t_data *data, int frame)
+static void	animate_collection_utils(t_data *data, int frame)
 {
 	int			i;
 	int			x;

@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:21:49 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/19 16:08:31 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/02/11 14:40:40 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 static void	fill_background(t_data *data)
 {
-	mlx_image_t		*img;
 	int				x;
 	int				y;
 
-	img = ft_texture_to_image(data, IMG_BACKGROUND, PIXEL, PIXEL);
+	data->asset[0] = ft_texture_to_image(data, IMG_BACKGROUND, PIXEL, PIXEL);
 	y = 1;
 	while (y <= data->map.size.y)
 	{
 		x = 1;
 		while (x < data->map.size.x)
 		{
-			mlx_image_to_window(data->mlx, img, PIXEL * x, PIXEL * y);
+			mlx_image_to_window(data->mlx, data->asset[0],
+				PIXEL * x, PIXEL * y);
 			x++;
 		}
 		y++;
@@ -34,10 +34,10 @@ static void	fill_background(t_data *data)
 
 static void	fill_wall(t_data *data)
 {
-	mlx_image_t	*i;
 	t_pos		p;
 
-	i = ft_texture_to_image(data, "textures/wall.png", PIXEL, PIXEL);
+	data->asset[1] = ft_texture_to_image(data,
+			"textures/wall.png", PIXEL, PIXEL);
 	p.y = 0;
 	while (p.y < data->map.size.y)
 	{
@@ -45,7 +45,7 @@ static void	fill_wall(t_data *data)
 		while (p.x < data->map.size.x)
 		{
 			if (data->map.map[p.y][p.x] == WALL)
-				mlx_image_to_window(data->mlx, i,
+				mlx_image_to_window(data->mlx, data->asset[1],
 					PIXEL * (p.x + 1), (PIXEL * (p.y + 1)) - 5);
 			p.x++;
 		}
@@ -63,15 +63,15 @@ static void	fill_everything(t_data *data)
 		pos.x = 1;
 		while (pos.x < data->map.size.x - 2)
 		{
-			if (data->map.map[pos.y][pos.x] == PLAYER)
+			if (data->map.map[pos.y][pos.x] == MONSTER)
+				fill_monster(data, pos);
+			else if (data->map.map[pos.y][pos.x] == PLAYER)
 				mlx_image_to_window(data->mlx, data->player.idle[0],
 					PIXEL * (pos.x + 1), PIXEL * (pos.y + 1));
 			else if (data->map.map[pos.y][pos.x] == COIN)
 				fill_coin(data, pos);
 			else if (data->map.map[pos.y][pos.x] == EXIT)
 				fill_exit(data, pos);
-			else if (data->map.map[pos.y][pos.x] == MONSTER)
-				fill_monster(data, pos);
 			pos.x++;
 		}
 		pos.y++;

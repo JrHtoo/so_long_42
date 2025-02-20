@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 16:08:47 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/24 11:58:59 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:52:13 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	fill_monster(t_data *data, t_pos pos)
 			data->mon[i]->instances[index].enabled = false;
 		i++;
 	}
+	data->mon_dir[index] = INVALID;
 	index++;
 	data->map.mon_num++;
 }
@@ -34,7 +35,6 @@ static int	next_move_valid(t_data *data, t_move dir, int x, int y)
 {
 	x = (x / PIXEL) - 1;
 	y = (y / PIXEL) - 1;
-	printf("%d %d\n", x, y);
 	if (dir == UP && data->map.map[y][x] == WALL)
 		return (0);
 	else if (dir == DOWN && data->map.map[y + 1][x] == WALL)
@@ -46,26 +46,26 @@ static int	next_move_valid(t_data *data, t_move dir, int x, int y)
 	return (1);
 }
 
-static t_pos	get_distance(t_data *data, int x, int y)
+static t_pos	get_distance(t_data *data, int x, int y, int index)
 {
 	t_pos	pos;
-	t_move	dir;
 
-	dir = INVALID;
 	pos.x = 0;
 	pos.y = 0;
-	if (dir == INVALID && next_move_valid(data, UP, x, y))
-		dir = UP;
-	else if (dir == INVALID)
-		dir = DOWN;
-	if (dir == UP && next_move_valid(data, dir, x, y))
+	if (data->mon_dir[index] == INVALID && next_move_valid(data, UP, x, y))
+		data->mon_dir[index] = UP;
+	else if (data->mon_dir[index] == INVALID)
+		data->mon_dir[index] = DOWN;
+	if (data->mon_dir[index] == UP
+		&& next_move_valid(data, data->mon_dir[index], x, y))
 		pos.y = -STEP_SIZE;
 	else
-		dir = DOWN;
-	if (dir == DOWN && next_move_valid(data, dir, x, y))
+		data->mon_dir[index] = DOWN;
+	if (data->mon_dir[index] == DOWN
+		&& next_move_valid(data, data->mon_dir[index], x, y))
 		pos.y = STEP_SIZE;
 	else
-		dir = UP;
+		data->mon_dir[index] = UP;
 	return (pos);
 }
 
@@ -79,7 +79,7 @@ static void	monster_animation_utils(t_data *data, int i)
 	{
 		step[index] = get_distance(data, data->mon[i / SPEED_M]
 				->instances[index].x, data->mon[i / SPEED_M]
-				->instances[index].y);
+				->instances[index].y, index);
 		if ((i / SPEED_M) == 1)
 			data->mon[4]->instances[index].enabled = false;
 		data->mon[i / SPEED_M]->instances[index].enabled = true;
@@ -87,7 +87,6 @@ static void	monster_animation_utils(t_data *data, int i)
 		data->mon[i / SPEED_M]->instances[index].x += step[index].x;
 		data->mon[i / SPEED_M]->instances[index].y += step[index].y;
 		index++;
-		printf("Monster %d : STEP-SIZEL: %d %d\n", index,  step[index].x, step[index].y);
 	}
 }
 
@@ -96,7 +95,7 @@ void	monster_animation(t_data *data)
 	static int	frame;
 	int			i;
 
-	i = SPEED_M;
+	i = 0;
 	while (i <= 4 * SPEED_M)
 	{
 		if (i == frame && i % SPEED_M == 0)

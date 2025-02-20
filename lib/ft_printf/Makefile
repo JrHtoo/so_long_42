@@ -6,33 +6,40 @@ SRCS = ft_nbrtohex.c	\
 		ft_putptr.c		\
 		ft_putunbr.c
 
-NAME = libftprintf.a
-
 INCLUDE = ft_printf.h
 
 OBJS_DIR = objs/
-OBJS = $(SRCS:.c=.o)
-OBJECTS_PREFIXED = $(addprefix $(OBJS_DIR), $(OBJS))
+OBJS	 = $(SRCS:.c=.o)
+SRCS_OBJS = $(addprefix $(OBJS_DIR), $(OBJS))
+
+NAME = libftprintf.a
 
 CC = gcc
+CFLAGS = -Werror -Wextra -Wall
+ARCHIVE = ar
+ARFLAGS = -rcs
 
-CC_FLAGS = -Wall -Wextra -Werror
+all: $(OBJS_DIR) $(NAME)
 
-$(OBJS_DIR)%.o : %.c Makefile $(INCLUDE)
-		@mkdir -p $(OBJS_DIR)
-		@echo "Compiling: $<"
-		@$(CC) $(CC_FLAGS) -c $< -o $@
+$(OBJS_DIR): $(INCLUDE) Makefile
+	@$(CC) $(CFLAGS) -c $(SRCS)
+	@mkdir -p $@
+	@mv *.o $@
 
-$(NAME): $(OBJECTS_PREFIXED)
-		@ar rcs $(NAME) $(INCLUDE) $(OBJECTS_PREFIXED)
-		@echo "libprintf Done!"
-
-all: $(NAME)
+$(NAME): $(SRCS)
+	@printf "\033[0;32mMaking libftprintf.....\n\e[0m"
+	@$(ARCHIVE) $(ARFLAGS) $(NAME) $(SRCS_OBJS)
+	@printf "\033[0;32mLibftprintf library complete!\n\e[0m"
 
 clean:
-		rm -rf $(OBJS_DIR)
+	@rm -rf $(OBJS_DIR)
+	@printf "\033[0;31mLIBFTPRINTF : Cleaning process done!\n\e[0m"
 
-fclean: clean
-		rm -f $(NAME)
+fclean:
+	@rm -rf $(OBJS_DIR)
+	@rm -rf $(NAME)
+	@printf "\033[0;31mLIBFTPRINTF : File cleaning process done!\n\e[0m"
 
 re: fclean all
+
+.PHONY: clean fclean re all

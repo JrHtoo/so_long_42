@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 13:56:44 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/24 11:30:44 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2024/12/24 15:54:29 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	death_animation(t_data *data)
 			if (i / SPEED_D != 1)
 				data->player.death[(i / SPEED_D) - 1]
 					->instances->enabled = false;
+			if (i / SPEED_D == 2)
+				ft_printf("GAME OVER!!GOOD LUCK NEXT TIME!\n");
 		}
 		i++;
 	}
@@ -41,16 +43,26 @@ void	death_animation(t_data *data)
 
 void	is_death(t_data *data)
 {
-	int	i;
+	int		i;
+	int		index;
+	t_pos	p;
+	t_pos	m;
 
-	i = 1;
+	i = 0;
+	p.x = data->player.idle[0]->instances->x;
+	p.y = data->player.idle[0]->instances->y;
 	while (i < data->map.mon_num)
 	{
-		if ((data->player.idle[0]->instances->x / PIXEL)
-			== (data->mon[i]->instances[i].x / PIXEL)
-			&& (data->player.idle[0]->instances->y / PIXEL)
-			== (data->mon[i]->instances[i].y / PIXEL))
-			death_animation(data);
+		index = 1;
+		while (index < 5)
+		{
+			m.x = data->mon[1]->instances[i].x;
+			m.y = data->mon[1]->instances[i].y;
+			if (p.x < (m.x + DIE_R) && (p.x + DIE_R) > m.x
+				&& p.y < (m.y + DIE_R) && (p.y + DIE_R) > m.y)
+				death_animation(data);
+			index++;
+		}
 		i++;
 	}
 }

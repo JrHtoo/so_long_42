@@ -6,11 +6,44 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:31:09 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/17 17:47:32 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/02/13 13:22:43 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
+
+void	ft_free_images(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < 28)
+	{
+		mlx_delete_image(data->mlx, data->player.walking[i]);
+		if (i < 2)
+		{
+			mlx_delete_image(data->mlx, data->player.idle[i]);
+			mlx_delete_image(data->mlx, data->asset[i]);
+		}
+		if (i < 4)
+			mlx_delete_image(data->mlx, data->player.death[i]);
+		if (i < 5)
+		{
+			mlx_delete_image(data->mlx, data->exit.img[i]);
+			mlx_delete_image(data->mlx, data->mon[i]);
+		}
+		if (i < 10)
+			mlx_delete_image(data->mlx, data->digit[i]);
+		i++;
+	}
+	mlx_terminate(data->mlx);
+}
+
+void	ft_print_error_parameter(char *error_msg)
+{
+	ft_printf("%s", error_msg);
+	exit(EXIT_FAILURE);
+}
 
 void	ft_print_error(t_data *data, char *error_msg)
 {

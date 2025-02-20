@@ -6,13 +6,13 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 15:57:48 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/19 14:16:34 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:49:55 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-int	is_valid_move(t_data data, t_move dir)
+static int	is_valid_move(t_data data, t_move dir)
 {
 	int	x;
 	int	y;
@@ -84,12 +84,12 @@ void	detect_keys(mlx_key_data_t keydata, void *param)
 	t_move	dir;
 
 	data = (t_data *)param;
-	if (data->status == YET)
+	if (keydata.action == MLX_PRESS)
 	{
-		if (keydata.action == MLX_PRESS)
+		if (keydata.key == MLX_KEY_ESCAPE)
+			ft_exit(data, "Escape from the game!\n");
+		if (data->status == YET)
 		{
-			if (keydata.key == MLX_KEY_ESCAPE)
-				ft_exit(data, "Escape from the game!\n");
 			dir = direction(*data, keydata.key);
 			if (dir != INVALID && data->player.status == IDILE)
 			{

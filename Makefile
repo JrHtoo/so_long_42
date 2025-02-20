@@ -6,7 +6,7 @@
 #    By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 15:28:49 by juhtoo-h          #+#    #+#              #
-#    Updated: 2024/12/23 16:22:36 by juhtoo-h         ###   ########.fr        #
+#    Updated: 2025/02/20 13:04:02 by juhtoo-h         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,38 +45,41 @@ OBJECTS = $(SRCS_PREFIXED:.c=.o)
 all: SUBSYSTEMS $(NAME)
 
 SUBSYSTEMS:
-		@echo "Making MLX42..."
 		@cmake $(MLX42_PATH) -B $(MLX42_PATH)/build && make -C $(MLX42_PATH)/build -j4
-		@echo "Making libft"
-		make -C $(LIBFT_PATH) all
-		@echo "Making libprintf"
-		make -C $(PRINTF_PATH) all
+		@make -C $(LIBFT_PATH) all -s
+		@make -C $(PRINTF_PATH) all -s
+		@echo
 
 %.o : %.c Makefile $(INCLUDE)
-	@echo "Compling: $<"
+	@printf "\033[0;32mCompling: $<\n\e[0m"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJECTS) Makefile $(INCLUDE)
 	@echo
-	@echo "Compling $(NAME)..."
-	$(CC) $(CFLAGS) $(OBJECTS) $(MLX42_LIB) $(LIBFT_LIB) $(PRINTF_LIB) -o $(NAME)
-	@echo "Finished $(NAME)"
+	@printf "\033[0;32mCompling $(NAME)...\n\e[0m"
+	@echo
+	@$(CC) $(CFLAGS) $(OBJECTS) $(MLX42_LIB) $(LIBFT_LIB) $(PRINTF_LIB) -o $(NAME)
+	@printf "\033[0;32mFinished $(NAME)\n\e[0m"
 
 norm:
 	norminette lib/libft lib/ft_printf src include
 
 clean:
-	make -C $(LIBFT_PATH) clean
-	make -C $(PRINTF_PATH) clean
-	@rm -f $(OBJECTS)
+	@make -C $(LIBFT_PATH) clean -s
+	@make -C $(PRINTF_PATH) clean -s
 	@rm -rf $(MLX42_PATH)build
-	@echo "Removed $(OBJECTS)"
+	@printf "\033[0;31mMLX Cleaning process done!\n\e[0m"
+	@rm -f $(OBJECTS)
+	@printf "\033[0;31mCleaning process done!\n\e[0m"
 
-fclean: clean
-	make -C $(LIBFT_PATH) fclean
-	make -C $(PRINTF_PATH) fclean
+fclean:
+	@make -C $(LIBFT_PATH) fclean -s
+	@make -C $(PRINTF_PATH) fclean -s
+	@rm -rf $(MLX42_PATH)build
+	@rm -f $(OBJECTS)
+	@printf "\033[0;31mMLX Cleaning process done!\n\e[0m"
 	@rm -f $(NAME)
-	@echo "Removed $(NAME)"
+	@printf "\033[0;31mFile cleaning process done!\n\e[0m"
 
 re: fclean all
 

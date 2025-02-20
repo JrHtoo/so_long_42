@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 14:05:10 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/24 12:47:51 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:52:04 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	ft_window_size(t_data *data, char *map_path)
 	if (fd < 0 || (map_path[n] != 'r' && map_path[n - 1] != 'e'
 			&& map_path[n - 2] != 'b' && map_path[n - 3] != '.'))
 	{
-		perror("Error\n Invalid map_path/map\n");
+		perror("Error! Invalid map_path/map");
 		exit(EXIT_FAILURE);
 	}
 	data->map.size.x = ft_line_length(fd);
@@ -48,7 +48,7 @@ int32_t	main(int argc, char **argv)
 	int		height;
 
 	if (argc != 2)
-		ft_print_error(&data, "Error! Expect only one parameter!");
+		ft_print_error_parameter("Error! Expect only one parameter!\n");
 	ft_window_size(&data, argv[1]);
 	ft_init(&data);
 	read_map(&data, argv[1]);
@@ -57,10 +57,14 @@ int32_t	main(int argc, char **argv)
 	data.mlx = mlx_init(width, height, GAME_TITLE, false);
 	rendering(&data);
 	if (!data.mlx)
-		ft_print_error(&data, "Error initializing library\n");
+	{
+		ft_free_images(&data);
+		ft_print_error(&data, "Error! initializing library\n");
+	}
 	mlx_loop_hook(data.mlx, &animate, &data);
 	mlx_key_hook(data.mlx, &detect_keys, &data);
 	mlx_loop(data.mlx);
 	ft_freemap(data.map.map, data.map.size.y);
+	ft_free_images(&data);
 	return (EXIT_SUCCESS);
 }

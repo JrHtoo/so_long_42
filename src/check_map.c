@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 09:01:16 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2024/12/24 12:48:04 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:11:02 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	check_route(t_data *data)
 	copy_map = ft_copy_map(*data);
 	exit = ft_mapchr(copy_map, data->map.size, 'E');
 	flood_fill(copy_map, data->map.size,
-		data->player.position.x, data->player.position.y);
+		data->player.position.y, data->player.position.x);
 	if (ft_mapchr(copy_map, data->map.size, 'C') > 0)
 	{
 		ft_freemap(copy_map, data->map.size.y);

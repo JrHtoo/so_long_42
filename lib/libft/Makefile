@@ -12,31 +12,39 @@ SRCS =	ft_bzero.c		\
 		ft_printmap.c \
 		ft_itoa.c
 		
+OBJS_DIR = objs/
+OBJS	 = $(SRCS:.c=.o)
+SRCS_OBJS = $(addprefix $(OBJS_DIR), $(OBJS))
+
 NAME = libft.a
 
-OBJS_DIR = objs/
-OBJS = $(SRCS:.c=.o)
-OBJECTS_PREFIXED = $(addprefix $(OBJS_DIR), $(OBJS))
-
 CC = gcc
+CFLAGS = -Werror -Wextra -Wall
+ARCHIVE = ar
+ARFLAGS = -rcs
 
-CC_FLAGS = -Wall -Wextra -Werror
+all: $(OBJS_DIR) $(NAME)
 
-$(OBJS_DIR)%.o : %.c libft.h
-	@mkdir -p $(OBJS_DIR)
-	@echo "Compiling: $<"
-	@$(CC) $(CC_FLAGS) -c $< -o $@
+$(OBJS_DIR): $(INCLUDE) Makefile
+	@printf "\033[0;32mMaking libft.....\n\e[0m"
+	@$(CC) $(CFLAGS) -c $(SRCS)
+	@mkdir -p $@
+	@mv *.o $@
 
-$(NAME): $(OBJECTS_PREFIXED)
-	@ar r $(NAME) $(OBJECTS_PREFIXED)
-	@echo "Libft Done !"
+$(NAME): $(SRCS)
+	@$(ARCHIVE) $(ARFLAGS) $(NAME) $(SRCS_OBJS)
+	@printf "\033[0;32mLibft library complete!\n\e[0m"
 
-all: $(NAME)
 
 clean:
-	rm -rf $(OBJS_DIR)
+	@rm -rf $(OBJS_DIR)
+	@printf "\033[0;31mLIBFT : Cleaning process done!\n\e[0m"
 
-fclean: clean
-	rm -f $(NAME)
+fclean:
+	@rm -rf $(OBJS_DIR)
+	@rm -rf $(NAME)
+	@printf "\033[0;31mLIBFT : File cleaning process done!\n\e[0m"
 
 re: fclean all
+
+.PHONY: clean fclean re all bonus
